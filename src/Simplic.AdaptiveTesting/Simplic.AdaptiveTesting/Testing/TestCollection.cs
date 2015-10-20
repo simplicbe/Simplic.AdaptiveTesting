@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Simplic.AdaptiveTesting.Testing
 {
-    class Test
+    public class TestCollection
     {
+
     }
 }
