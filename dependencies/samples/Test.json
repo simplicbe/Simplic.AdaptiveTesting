@@ -1,0 +1,27 @@
+{
+  /* Settings for the current test-project */
+  "settings": {
+
+    /* Name of the test-project */
+    "project": "sat-sample",
+
+    /* Test-Results/Reports will be saved in the following directory */
+    "reportOutput": "\\Rpt-Output",
+
+    /* Mail-Settings for sending report directly via mail */
+    "mailing": {
+      "smtp": "smpt.sample.com",
+      "username": "",
+      "password": "",
+      "useSSL": "true",
+      "port": "587",
+      "from": "fro@bar.com",
+      "to":  "bar@foo.com"
+    }
+  },
+
+  /* Contains all test-cases, which will be executed for the current test */
+  "testCases": [
+
+  ]
+}
