@@ -11,5 +11,6 @@ namespace Simplic.AdaptiveTesting.Reporting
     /// </summary>
     public class TestCaseReportTemplate
     {
+
     }
 }

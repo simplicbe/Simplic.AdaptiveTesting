@@ -15,13 +15,50 @@
       "password": "",
       "useSSL": "true",
       "port": "587",
-      "from": "fro@bar.com",
-      "to":  "bar@foo.com"
+      "from": "foo@bar.com",
+      "to": "bar@foo.com"
     }
   },
 
   /* Contains all test-cases, which will be executed for the current test */
   "testCases": [
 
+    /* Call CLR-Methods */
+    {
+      "name": "sample-clr-test",
+      "type": "clr",
+      "options": {
+        "namesace": "<<namespace>>",
+        "class": "<<class-name>>",
+        "method": "<<method-name>>"
+      }
+    }
+
+    /* Call IronPython scripts */
+    {
+      "name": "sample-ip-test",
+      "type": "ironpython",
+      "options": {
+        "path":  "scripts\\sample.py"
+      }
+    },
+
+    /* Execute SQL */
+    {
+      "name": "sample-sql-test",
+      "type": "sybase-sql",
+      "options": {
+        "path":  "sql\\sample.sql"
+      }
+    },
+
+    /* Start exe-files */
+    {
+      "name": "sample-sql-test",
+      "type": "exe",
+      "options": {
+        "path":  "exe\\sample.exe"
+      }
+    }
   ]
 }

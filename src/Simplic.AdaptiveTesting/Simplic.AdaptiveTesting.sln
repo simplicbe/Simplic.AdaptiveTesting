@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.AdaptiveTesting", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAT.Shell", "SAT.Shell\SAT.Shell.csproj", "{19845C23-A5F2-4FC2-A67C-36593090872A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{764EBCE0-1AEE-4E56-AE2D-D9D917A5DFB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAT.PlugIn.Std", "SAT.PlugIn.Std\SAT.PlugIn.Std.csproj", "{FEB8C745-12DC-4856-A330-86FF71A753E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{19845C23-A5F2-4FC2-A67C-36593090872A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19845C23-A5F2-4FC2-A67C-36593090872A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19845C23-A5F2-4FC2-A67C-36593090872A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB8C745-12DC-4856-A330-86FF71A753E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB8C745-12DC-4856-A330-86FF71A753E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB8C745-12DC-4856-A330-86FF71A753E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB8C745-12DC-4856-A330-86FF71A753E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FEB8C745-12DC-4856-A330-86FF71A753E2} = {764EBCE0-1AEE-4E56-AE2D-D9D917A5DFB0}
 	EndGlobalSection
 EndGlobal
