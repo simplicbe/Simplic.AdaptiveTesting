@@ -13,7 +13,7 @@ namespace Simplic.AdaptiveTesting.Testing
     public class TestResult
     {
         #region Private Member
-        private string testName;
+        private TestCase testCase;
         private TestCaseExitCode exitCode;
         private string message;
         #endregion
@@ -22,10 +22,10 @@ namespace Simplic.AdaptiveTesting.Testing
         /// <summary>
         /// Create new test-result
         /// </summary>
-        /// <param name="testName">Contains the unique name of a test. The uniqueness will not be proofed</param>
-        public TestResult(string testName)
+        /// <param name="testCase">Instance of the test which creates this result</param>
+        public TestResult(TestCase testCase)
         {
-            this.TestName = testName;
+            this.testCase = testCase;
         }
         #endregion
 
@@ -33,16 +33,16 @@ namespace Simplic.AdaptiveTesting.Testing
         /// <summary>
         /// Name of the test which produce this result. Will be part of a test report
         /// </summary>
-        public string TestName
+        public TestCase TestCase
         {
             get
             {
-                return testName;
+                return testCase;
             }
 
             set
             {
-                testName = value;
+                testCase = value;
             }
         }
 

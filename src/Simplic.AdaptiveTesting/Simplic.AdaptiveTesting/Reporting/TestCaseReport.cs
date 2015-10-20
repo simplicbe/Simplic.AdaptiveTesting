@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Simplic.AdaptiveTesting.Reporting
 {
-    class Report
+    /// <summary>
+    /// Contains the report for a single test-case
+    /// </summary>
+    public class TestCaseReport
     {
     }
 }

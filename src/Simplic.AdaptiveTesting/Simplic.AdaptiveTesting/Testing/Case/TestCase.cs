@@ -14,6 +14,7 @@ namespace Simplic.AdaptiveTesting.Testing
     {
         #region Private Member
         private string testName;
+        private long elapsedTime;
         #endregion
 
         #region Constructor
@@ -25,6 +26,45 @@ namespace Simplic.AdaptiveTesting.Testing
         {
             this.TestName = testName;
         }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Execute the current test
+        /// </summary>
+        /// <returns>Test-Result instance containing all result information</returns>
+        public virtual TestResult Execute()
+        {
+            TestResult testResult = null;
+
+            try
+            {
+                // Before test starts
+                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+
+                // Execute test
+                testResult = Process();
+
+                // Test finised
+                elapsedTime = watch.ElapsedMilliseconds;
+                watch.Stop();
+            }
+            catch(Exception ex)
+            {
+                // Create TestResult and add exception information
+                testResult = new TestResult(this);
+                testResult.ExitCode = TestCaseExitCode.Error;
+                testResult.Message = ex.ToString() + (ex.InnerException == null ? "" : "\r\n" + ex.InnerException.ToString());
+            }
+
+            return testResult;
+        }
+
+        /// <summary>
+        /// Must be implemented in all test-case implementations. In this class the test must be executed
+        /// </summary>
+        /// <returns>Instance of a test-result for report generating</returns>
+        public abstract TestResult Process();
         #endregion
 
         #region Public Member

@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 namespace Simplic.AdaptiveTesting.Reporting
 {
     /// <summary>
-    /// Represents the complete test-report over all TestCaseReports
+    /// Template for generating reports.
     /// </summary>
-    public class TestReport
+    public class TestCaseReportTemplate
     {
-
     }
 }
