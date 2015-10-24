@@ -39,7 +39,7 @@
       "name": "sample-ip-test",
       "type": "ironpython",
       "options": {
-        "path":  "scripts\\sample.py"
+        "path": "scripts\\sample.py"
       }
     },
 
@@ -48,7 +48,7 @@
       "name": "sample-sql-test",
       "type": "sybase-sql",
       "options": {
-        "path":  "sql\\sample.sql"
+        "path": "sql\\sample.sql"
       }
     },
 
@@ -57,8 +57,14 @@
       "name": "sample-sql-test",
       "type": "exe",
       "options": {
-        "path":  "exe\\sample.exe"
+        "path": "exe\\sample.exe"
       }
     }
+
+    /* Start unit-test-method */
+
+    /* Start unit-test-class */
+
+    /* Start all unit-tests */
   ]
 }
