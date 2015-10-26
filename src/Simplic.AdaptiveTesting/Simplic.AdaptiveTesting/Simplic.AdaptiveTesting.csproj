@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Indicator\Implementation\TestDurationIndicator.cs" />
+    <Compile Include="Indicator\Indicator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporting\TestCaseReport.cs" />
     <Compile Include="Reporting\TestCaseReportTemplate.cs" />

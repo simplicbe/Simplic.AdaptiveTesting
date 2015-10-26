@@ -14,7 +14,7 @@ namespace Simplic.AdaptiveTesting.Testing
     {
         #region Private Member
         private string testName;
-        private long elapsedTime;
+        private IList<Indicator> indicators;
         #endregion
 
         #region Constructor
@@ -25,6 +25,7 @@ namespace Simplic.AdaptiveTesting.Testing
         public TestCase(string testName)
         {
             this.TestName = testName;
+            indicators = new List<Indicator>();
         }
         #endregion
 
@@ -40,14 +41,19 @@ namespace Simplic.AdaptiveTesting.Testing
             try
             {
                 // Before test starts
-                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                foreach (var indicator in indicators)
+                {
+                    indicator.Start();
+                }
 
                 // Execute test
                 testResult = Process();
 
-                // Test finised
-                elapsedTime = watch.ElapsedMilliseconds;
-                watch.Stop();
+                // Test finished, stop indicator
+                foreach (var indicator in indicators)
+                {
+                    indicator.Stop();
+                }
             }
             catch(Exception ex)
             {
@@ -65,6 +71,20 @@ namespace Simplic.AdaptiveTesting.Testing
         /// </summary>
         /// <returns>Instance of a test-result for report generating</returns>
         public abstract TestResult Process();
+
+        /// <summary>
+        /// Add an indicator to the list of indicators for the current test-case
+        /// </summary>
+        /// <param name="indicator">Instance of an indicator</param>
+        public virtual void AddIndicator(Indicator indicator)
+        {
+            if (indicator == null)
+            {
+                throw new ArgumentNullException("indicator");
+            }
+
+            indicators.Add(indicator);
+        }
         #endregion
 
         #region Public Member
@@ -81,6 +101,17 @@ namespace Simplic.AdaptiveTesting.Testing
             set
             {
                 testName = value;
+            }
+        }
+
+        /// <summary>
+        /// Get a list of available indicators
+        /// </summary>
+        public IList<Indicator> Indicators
+        {
+            get
+            {
+                return indicators;
             }
         }
         #endregion

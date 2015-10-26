@@ -34,6 +34,9 @@ namespace SAT.Shell
             // Create new simplic command shell context for processing the input arguments
             var context = Simplic.CommandShell.CommandShellManager.Singleton.CreateShellContext("sat");
 
+            // Register all commands
+            context.RegisterMethod("test", TestingCommands.Test, "path");
+
             // Execute command
             bool errorOccured = false;
             string cmd = "";
