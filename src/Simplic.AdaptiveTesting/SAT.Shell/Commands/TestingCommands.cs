@@ -24,7 +24,8 @@ namespace SAT.Shell
             if (File.Exists(path))
             {
                 Console.WriteLine("Execute test-file: {0}", path);
-                var process = new Simplic.AdaptiveTesting.TestProcess(File.ReadAllText(path), new ErrorListener());
+                var process = new Simplic.AdaptiveTesting.TestProcess(File.ReadAllText(path), new MessageListener());
+                process.Start();
             }
             else
             {
@@ -40,21 +41,57 @@ namespace SAT.Shell
     }
 
     /// <summary>
-    /// Error-Listener for error output
+    /// Listener for message output
     /// </summary>
-    public class ErrorListener : IErrorListener
+    public class MessageListener : IListener
     {
         /// <summary>
         /// Print error
         /// </summary>
         /// <param name="area">Area where the error occured</param>
         /// <param name="message">Detail message text</param>
-        public void Write(string area, string message)
+        public void Error(string area, string message)
         {
             using (ConsoleError _error = new ConsoleError())
             {
-                Console.WriteLine((area ?? "NULL") + " -> " + (message ?? "NULL"));
+                Write(area, message);
             }
+        }
+
+        /// <summary>
+        /// Write success message
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="message"></param>
+        public void Success(string area, string message)
+        {
+            using (ConsoleSuccess _success = new ConsoleSuccess())
+            {
+                Write(area, message);
+            }
+        }
+
+        /// <summary>
+        /// Write warning
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="message"></param>
+        public void Warning(string area, string message)
+        {
+            using (ConsoleWarning _success = new ConsoleWarning())
+            {
+                Write(area, message);
+            }
+        }
+
+        /// <summary>
+        /// Write simple message
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="message"></param>
+        public void Write(string area, string message)
+        {
+            Console.WriteLine((area ?? "NULL") + "-> " + (message ?? "NULL"));
         }
     }
 }

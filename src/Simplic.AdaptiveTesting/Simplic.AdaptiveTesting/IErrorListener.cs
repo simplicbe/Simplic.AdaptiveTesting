@@ -9,13 +9,34 @@ namespace Simplic.AdaptiveTesting
     /// <summary>
     /// Interface to get error during testing/loading
     /// </summary>
-    public interface IErrorListener
+    public interface IListener
     {
+        /// <summary>
+        /// Write message to some error output
+        /// </summary>
+        /// <param name="area">Area where the message will be promted from</param>
+        /// <param name="message">Detailed message</param>
+        void Write(string area, string message);
+
         /// <summary>
         /// Write error to some error output
         /// </summary>
-        /// <param name="area">Area where the error occures</param>
-        /// <param name="message">Detailed error message</param>
-        void Write(string area, string message);
+        /// <param name="area">Area where the message will be promted from</param>
+        /// <param name="message">Detailed message</param>
+        void Error(string area, string message);
+
+        /// <summary>
+        /// Write warning to some error output
+        /// </summary>
+        /// <param name="area">Area where the message will be promted from</param>
+        /// <param name="message">Detailed message</param>
+        void Warning(string area, string message);
+
+        /// <summary>
+        /// Write success to some error output
+        /// </summary>
+        /// <param name="area">Area where the message will be promted from</param>
+        /// <param name="message">Detailed message</param>
+        void Success(string area, string message);
     }
 }

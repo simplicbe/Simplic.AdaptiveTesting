@@ -15,6 +15,7 @@ namespace Simplic.AdaptiveTesting.Testing
         #region Private Member
         private string testName;
         private IList<Indicator> indicators;
+        private IDictionary<string, string> options;
         #endregion
 
         #region Constructor
@@ -22,7 +23,8 @@ namespace Simplic.AdaptiveTesting.Testing
         /// Create new test-case
         /// </summary>
         /// <param name="testName">Unique name of the testcase. uniqueness will not be proofed</param>
-        public TestCase(string testName)
+        /// <param name="options">Options for the test configuration</param>
+        public TestCase(string testName, IDictionary<string, string> options)
         {
             this.TestName = testName;
             indicators = new List<Indicator>();
@@ -112,6 +114,17 @@ namespace Simplic.AdaptiveTesting.Testing
             get
             {
                 return indicators;
+            }
+        }
+
+        /// <summary>
+        /// Test-case options from configuration
+        /// </summary>
+        public IDictionary<string, string> Options
+        {
+            get
+            {
+                return options;
             }
         }
         #endregion

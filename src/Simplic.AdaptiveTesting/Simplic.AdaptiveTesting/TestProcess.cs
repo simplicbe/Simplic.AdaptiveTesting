@@ -5,6 +5,7 @@ using Simplic.AdaptiveTesting.Testing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +13,9 @@ namespace Simplic.AdaptiveTesting
 {
     /// <summary>
     /// The test-process is the main class for executing a complete test containins:
-    /// 1. Test case execution
-    /// 2. Report generation
+    /// 1. Configuration loading
+    /// 2. Test case execution
+    /// 3. Report generation
     /// </summary>
     public class TestProcess
     {
@@ -21,8 +23,10 @@ namespace Simplic.AdaptiveTesting
         private TestCollection testCollection;
         private TestReport testReport;
         private TestConfiguration configuration;
-        private IErrorListener errorlistener;
+        private IListener listener;
         private bool errorsOccured;
+
+        private IDictionary<string, Type> testModules;
         #endregion
 
         #region Constructor
@@ -31,14 +35,49 @@ namespace Simplic.AdaptiveTesting
         /// </summary>
         /// <param name="jsonConfiguration">Configuration of the current adaptive test.</param>
         /// <param name="listener">Error-Listener</param>
-        public TestProcess(string jsonConfiguration, IErrorListener listener)
+        /// <param name="autoPlugInDetection">If set to true, the system will look for plugins in the current AppDomain</param>
+        public TestProcess(string jsonConfiguration, IListener listener, bool autoPlugInDetection = true)
         {
-            errorlistener = listener;
+            testCollection = new TestCollection();
+            testReport = new TestReport();
+
+            testModules = new Dictionary<string, Type>();
+
+            this.listener = listener;
 
             configuration = JsonConvert.DeserializeObject<TestConfiguration>(jsonConfiguration);
-            System.Diagnostics.Debugger.Launch();
+
             // Validate configuration
             errorsOccured = !Validate(configuration);
+
+            // Load module definitions if autoPlugInDetection is enabled
+            if (autoPlugInDetection)
+            {
+                foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (asm.FullName.Contains("SAT.PlugIn"))
+                    {
+                        foreach (Type cType in asm.GetTypes())
+                        {
+                            // Find Attributes
+                            Attribute[] cAttributes = System.Attribute.GetCustomAttributes(cType);
+
+                            if (cAttributes != null)
+                            {
+                                // Iterate throught all attributes
+                                foreach (PlugIns.PlugInDefinitionAttribute def in cAttributes)
+                                {
+                                    if (def is PlugIns.PlugInDefinitionAttribute)
+                                    {
+                                        listener.Write("ModuleDef", def.Name);
+                                        AddTestModule(def.Name, def.Type);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
@@ -61,26 +100,50 @@ namespace Simplic.AdaptiveTesting
 
             if (configuration.Settings == null)
             {
-                errorlistener.Write("Configuration.Validation", "Could not find `settings` in Testproject configuration");
+                listener.Error("Configuration.Validation", "Could not find `settings` in Testproject configuration");
                 returnValue = false;
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(configuration.Settings.Project))
                 {
-                    errorlistener.Write("Configuration.Validation", "Could not find `project`-name in `settings`");
+                    listener.Error("Configuration.Validation", "Could not find `project`-name in `settings`");
                     returnValue = false;
                 }
-                if (string.IsNullOrWhiteSpace("reportOutput"))
+
+                if (string.IsNullOrWhiteSpace(configuration.Settings.ReportOutput))
                 {
-                    errorlistener.Write("Configuration.Validation", "Could not find `reportOutput` in `settings`");
+                    listener.Error("Configuration.Validation", "Could not find `reportOutput` in `settings`");
                     returnValue = false;
+                }
+                else
+                {
+                    try
+                    {
+                        if (!configuration.Settings.ReportOutput.StartsWith("\\"))
+                        {
+                            configuration.Settings.ReportOutput = "\\" + configuration.Settings.ReportOutput;
+                        }
+                        if (!configuration.Settings.ReportOutput.EndsWith("\\"))
+                        {
+                            configuration.Settings.ReportOutput += "\\";
+                        }
+
+                        // create complete output path
+                        configuration.Settings.ReportOutput = System.Windows.Forms.Application.StartupPath + configuration.Settings.ReportOutput;
+
+                        IO.DirectoryHelper.CreateDirectoryIfNotExists(configuration.Settings.ReportOutput);
+                    }
+                    catch (Exception ex)
+                    {
+                        listener.Error("Configuration.CreateRptDirectory", "Could not create report output directory: " + configuration.Settings.ReportOutput + " - " + ex.Message);
+                    }
                 }
             }
 
             if (configuration.TestCases == null || configuration.TestCases.Count == 0)
             {
-                errorlistener.Write("Configuration.Validation", "Could not find any `testCase` in Testproject configuration");
+                listener.Error("Configuration.Validation", "Could not find any `testCase` in Testproject configuration");
                 returnValue = false;
             }
 
@@ -91,6 +154,68 @@ namespace Simplic.AdaptiveTesting
         #endregion
 
         #region Public Methods
+
+        #region [Start]
+        /// <summary>
+        /// Start the test process
+        /// </summary>
+        public void Start()
+        {
+            if (configuration == null || errorsOccured)
+            {
+                listener.Error("Process.NoConfiguration", "No configuration loaded");
+                return;
+            }
+            else
+            {
+                Console.WriteLine();
+                listener.Success("Process", "Start: " + configuration.Settings.Project);
+
+                // Create all needed test-cases
+                listener.Write("Procee", "Create test-cases");
+
+                foreach (var caseConfig in configuration.TestCases)
+                {
+                    if (testModules.ContainsKey(caseConfig.Type))
+                    {
+                        // Create instance of a test-case
+                        var tc = (TestCase)Activator.CreateInstance(
+                                        testModules[caseConfig.Type],
+                                        caseConfig.Name,
+                                        caseConfig.Options
+                                    );
+
+                        // Add to collection
+                        testCollection.TestCases.Add(tc);
+                    }
+                    else
+                    {
+                        listener.Error("Process.TestCase", "Could not find module definition for test-case: `" + (caseConfig.Type ?? "") + "`");
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region [AddTestModule]
+        /// <summary>
+        /// Add a module definition to the current TestProcess
+        /// </summary>
+        /// <param name="name">Unique name of the module definition</param>
+        /// <param name="type">Type for createing a test-module</param>
+        public void AddTestModule(string name, Type type)
+        {
+            if (!testModules.ContainsKey(name))
+            {
+                testModules.Add(name, type);
+            }
+            else
+            {
+                listener.Error("TestMoulde.Add", "The module definition: " + name + " is already existing");
+                errorsOccured = true;
+            }
+        }
+        #endregion
 
         #endregion
 
