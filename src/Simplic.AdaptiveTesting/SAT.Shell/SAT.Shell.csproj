@@ -59,6 +59,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.AdaptiveTesting\Simplic.AdaptiveTesting.csproj">
+      <Project>{98a6503e-9a9b-4dab-8d62-10fb145662ab}</Project>
+      <Name>Simplic.AdaptiveTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

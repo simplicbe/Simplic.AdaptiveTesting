@@ -40,7 +40,7 @@ namespace Simplic.AdaptiveTesting
         /// </summary>
         public override void Stop()
         {
-            stopwatch.Start();
+            stopwatch.Stop();
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using Simplic.CommandShell;
+﻿using Simplic.AdaptiveTesting;
+using Simplic.CommandShell;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,7 @@ namespace SAT.Shell
             if (File.Exists(path))
             {
                 Console.WriteLine("Execute test-file: {0}", path);
+                var process = new Simplic.AdaptiveTesting.TestProcess(File.ReadAllText(path), new ErrorListener());
             }
             else
             {
@@ -35,5 +37,24 @@ namespace SAT.Shell
             return "";
         }
         #endregion
+    }
+
+    /// <summary>
+    /// Error-Listener for error output
+    /// </summary>
+    public class ErrorListener : IErrorListener
+    {
+        /// <summary>
+        /// Print error
+        /// </summary>
+        /// <param name="area">Area where the error occured</param>
+        /// <param name="message">Detail message text</param>
+        public void Write(string area, string message)
+        {
+            using (ConsoleError _error = new ConsoleError())
+            {
+                Console.WriteLine((area ?? "NULL") + " -> " + (message ?? "NULL"));
+            }
+        }
     }
 }
