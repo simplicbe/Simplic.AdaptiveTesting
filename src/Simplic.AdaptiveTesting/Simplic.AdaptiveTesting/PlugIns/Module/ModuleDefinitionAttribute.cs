@@ -10,12 +10,12 @@ namespace Simplic.AdaptiveTesting.PlugIns
     /// Attribute which must be decorated over all module definitions
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class PlugInDefinitionAttribute : Attribute
+    public class ModuleDefinitionAttribute : Attribute
     {
         /// <summary>
         /// Contains all loaded PlugIn definitions
         /// </summary>
-        public static IList<PlugInDefinitionAttribute> LoadedDefinitions
+        public static IList<ModuleDefinitionAttribute> LoadedDefinitions
         {
             get;
             private set;
@@ -26,7 +26,7 @@ namespace Simplic.AdaptiveTesting.PlugIns
         /// </summary>
         /// <param name="name">Name of the plugin</param>
         /// <param name="type">Type of the plugin</param>
-        public PlugInDefinitionAttribute(string name, Type type)
+        public ModuleDefinitionAttribute(string name, Type type)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -43,7 +43,7 @@ namespace Simplic.AdaptiveTesting.PlugIns
 
             if (LoadedDefinitions == null)
             {
-                LoadedDefinitions = new List<PlugInDefinitionAttribute>();
+                LoadedDefinitions = new List<ModuleDefinitionAttribute>();
             }
 
             // Add to definition list
@@ -82,9 +82,9 @@ namespace Simplic.AdaptiveTesting.PlugIns
             {
                 return false;
             }
-            else if (obj is PlugInDefinitionAttribute)
+            else if (obj is ModuleDefinitionAttribute)
             {
-                return Name == ((PlugInDefinitionAttribute)obj).Name;
+                return Name == ((ModuleDefinitionAttribute)obj).Name;
             }
             else
             {

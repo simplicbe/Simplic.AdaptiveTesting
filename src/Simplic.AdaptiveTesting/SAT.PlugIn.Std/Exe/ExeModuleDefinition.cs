@@ -12,7 +12,7 @@ namespace SAT.PlugIn.Std
     /// <summary>
     /// Test which simply execute a windows executable
     /// </summary>
-    [Simplic.AdaptiveTesting.PlugIns.PlugInDefinition("exe", typeof(ExeModuleDefinition))]
+    [Simplic.AdaptiveTesting.PlugIns.ModuleDefinition("exe", typeof(ExeModuleDefinition))]
     public class ExeModuleDefinition : TestCase
     {
         private string executable;

@@ -65,9 +65,9 @@ namespace Simplic.AdaptiveTesting
                             if (cAttributes != null)
                             {
                                 // Iterate throught all attributes
-                                foreach (PlugIns.PlugInDefinitionAttribute def in cAttributes)
+                                foreach (PlugIns.ModuleDefinitionAttribute def in cAttributes)
                                 {
-                                    if (def is PlugIns.PlugInDefinitionAttribute)
+                                    if (def is PlugIns.ModuleDefinitionAttribute)
                                     {
                                         listener.Write("ModuleDef", def.Name);
                                         AddTestModule(def.Name, def.Type);
@@ -216,6 +216,12 @@ namespace Simplic.AdaptiveTesting
                         {
                             listener.Error("Error", output.Message);
                         }
+                    }
+
+                    // Return indicator values
+                    foreach (var indicator in testCase.Indicators)
+                    {
+                        listener.Write("Indicator", indicator.ToString());
                     }
 
                     // Create report-entry

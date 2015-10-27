@@ -37,5 +37,14 @@ namespace Simplic.AdaptiveTesting.Configuration
             get;
             set;
         }
+
+        /// <summary>
+        /// Contains all indicators for the current test-case
+        /// </summary>
+        public IList<TestCaseIndicator> Indicators
+        {
+            get;
+            set;
+        }
     }
 }

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\TestCaseConfiguration.cs" />
+    <Compile Include="Configuration\TestCaseIndicator.cs" />
     <Compile Include="Configuration\TestConfiguration.cs" />
     <Compile Include="Configuration\TestSettingsConfiguration.cs" />
     <Compile Include="IErrorListener.cs" />

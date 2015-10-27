@@ -42,6 +42,15 @@ namespace Simplic.AdaptiveTesting
         {
             stopwatch.Stop();
         }
+
+        /// <summary>
+        /// Get as string
+        /// </summary>
+        /// <returns>Indicator as string</returns>
+        public override string ToString()
+        {
+            return String.Format("Duration: {0}", stopwatch.ElapsedMilliseconds.ToString());
+        }
         #endregion
     }
 }
