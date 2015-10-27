@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 namespace Simplic.AdaptiveTesting.Testing
 {
     /// <summary>
-    /// Contains a set of testcases
+    /// Class to store a collection of testcases. This class directly implement IEnumeratble to be an iterable list of test cases
     /// </summary>
-    public class TestCollection
+    public class TestCollection : IEnumerable<TestCase>
     {
         private IList<TestCase> testCases;
 
@@ -22,19 +23,38 @@ namespace Simplic.AdaptiveTesting.Testing
         }
 
         /// <summary>
-        /// List of test.cases
+        /// Add a simple testCase to the list of test-cases
         /// </summary>
-        public IList<TestCase> TestCases
+        /// <param name="testCase">Instance of a test case</param>
+        public void Add(TestCase testCase)
         {
-            get
+            if (testCase == null)
             {
-                return testCases;
+                throw new ArgumentNullException("testCase");
             }
 
-            set
+            testCases.Add(testCase);
+        }
+
+        /// <summary>
+        /// Get enumrator for iterating through the test cases
+        /// </summary>
+        /// <returns>Yield test cases</returns>
+        public IEnumerator<TestCase> GetEnumerator()
+        {
+            foreach (var testCase in testCases)
             {
-                testCases = value;
+                yield return testCase;       
             }
+        }
+
+        /// <summary>
+        /// Get the enumerator
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

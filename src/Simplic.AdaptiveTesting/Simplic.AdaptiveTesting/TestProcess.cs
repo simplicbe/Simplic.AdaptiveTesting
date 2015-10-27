@@ -186,12 +186,41 @@ namespace Simplic.AdaptiveTesting
                                     );
 
                         // Add to collection
-                        testCollection.TestCases.Add(tc);
+                        testCollection.Add(tc);
                     }
                     else
                     {
                         listener.Error("Process.TestCase", "Could not find module definition for test-case: `" + (caseConfig.Type ?? "") + "`");
                     }
+                }
+
+                // Execute tests
+                foreach (TestCase testCase in testCollection)
+                {
+                    listener.Write("Start", testCase.TestName);
+
+                    var output = testCase.Execute();
+
+                    // Output
+                    if (output != null)
+                    {
+                        if (output.ExitCode == TestCaseExitCode.Success)
+                        {
+                            listener.Success("Success", output.Message);
+                        }
+                        else if (output.ExitCode == TestCaseExitCode.Warning)
+                        {
+                            listener.Warning("Warning", output.Message);
+                        }
+                        else if (output.ExitCode == TestCaseExitCode.Error)
+                        {
+                            listener.Error("Error", output.Message);
+                        }
+                    }
+
+                    // Create report-entry
+                    var rptCase = new TestCaseReport(output, testCase.Indicators);
+                    testReport.TestCaseReports.Add(rptCase);
                 }
             }
         }

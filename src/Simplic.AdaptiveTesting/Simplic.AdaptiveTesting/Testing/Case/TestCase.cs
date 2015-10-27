@@ -72,7 +72,7 @@ namespace Simplic.AdaptiveTesting.Testing
         /// Must be implemented in all test-case implementations. In this class the test must be executed
         /// </summary>
         /// <returns>Instance of a test-result for report generating</returns>
-        public abstract TestResult Process();
+        protected abstract TestResult Process();
 
         /// <summary>
         /// Add an indicator to the list of indicators for the current test-case

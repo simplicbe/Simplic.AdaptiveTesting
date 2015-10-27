@@ -54,10 +54,12 @@
 
     /* Start exe-files */
     {
-      "name": "sample-sql-test",
+      "name": "sample-exe-test",
       "type": "exe",
       "options": {
-        "path": "exe\\sample.exe"
+        "path": "cmd",
+        "workingDir": "",
+        "arguments":  ""
       }
     }
 
