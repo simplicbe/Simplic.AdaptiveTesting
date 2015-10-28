@@ -25,6 +25,24 @@ namespace Simplic.AdaptiveTesting.Reporting
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Build report
+        /// </summary>
+        public void Build()
+        {
+
+        }
+
+        /// <summary>
+        /// Distribute the report
+        /// </summary>
+        public void Distribute()
+        {
+
+        }
+        #endregion
+
         #region Public Member
         /// <summary>
         /// List of all reports for a test scenario

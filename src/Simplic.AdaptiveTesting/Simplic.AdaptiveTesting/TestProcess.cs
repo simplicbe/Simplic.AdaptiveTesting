@@ -228,6 +228,14 @@ namespace Simplic.AdaptiveTesting
                     var rptCase = new TestCaseReport(output, testCase.Indicators);
                     testReport.TestCaseReports.Add(rptCase);
                 }
+
+                listener.Write("Report", "Build...");
+                testReport.Build();
+
+                listener.Write("Report", "Distribute...");
+                testReport.Distribute();
+
+                listener.Success("Test", "Finished");
             }
         }
         #endregion
