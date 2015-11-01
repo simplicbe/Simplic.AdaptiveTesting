@@ -52,11 +52,12 @@
     <Compile Include="Configuration\TestCaseIndicator.cs" />
     <Compile Include="Configuration\TestConfiguration.cs" />
     <Compile Include="Configuration\TestSettingsConfiguration.cs" />
-    <Compile Include="IErrorListener.cs" />
+    <Compile Include="IListener.cs" />
     <Compile Include="Indicator\Implementation\TestDurationIndicator.cs" />
     <Compile Include="Indicator\Indicator.cs" />
-    <Compile Include="PlugIns\Indicator\IndicatorDefinitionAttribute.cs" />
-    <Compile Include="PlugIns\Module\ModuleDefinitionAttribute.cs" />
+    <Compile Include="PlugIns\TestCaseDefinition\TestCaseDefinitionAttribute.cs" />
+    <Compile Include="PlugIns\PlugInBaseAttribute.cs" />
+    <Compile Include="PlugIns\PlugInManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporting\TestCaseReport.cs" />
     <Compile Include="Reporting\TestCaseReportTemplate.cs" />
@@ -70,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PlugIns\Indicator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

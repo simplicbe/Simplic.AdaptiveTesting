@@ -13,7 +13,7 @@ namespace SAT.PlugIn.Std
     /// Test which simply execute a windows executable
     /// </summary>
     [Simplic.AdaptiveTesting.PlugIns.TestCaseDefinition("exe", typeof(ExeModuleDefinition))]
-    public class ExeModuleDefinition : TestCase
+    public class ExeModuleDefinition2 : TestCase
     {
         private string executable;
         private string arguments;
@@ -24,7 +24,7 @@ namespace SAT.PlugIn.Std
         /// </summary>
         /// <param name="testName">Name of the test</param>
         /// <param name="options">Options. Must contains a path variable</param>
-        public ExeModuleDefinition(string testName, IDictionary<string, string> options) : base(testName, options)
+        public ExeModuleDefinition2(string testName, IDictionary<string, string> options) : base(testName, options)
         {
             if (!options.ContainsKey("path"))
             {

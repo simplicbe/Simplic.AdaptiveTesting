@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Simplic.AdaptiveTesting.PlugIns;
 
 namespace Simplic.AdaptiveTesting
 {
@@ -25,8 +26,7 @@ namespace Simplic.AdaptiveTesting
         private TestConfiguration configuration;
         private IListener listener;
         private bool errorsOccured;
-
-        private IDictionary<string, Type> testModules;
+        private PlugIns.PlugInManager plugInManager;
         #endregion
 
         #region Constructor
@@ -41,8 +41,6 @@ namespace Simplic.AdaptiveTesting
             testCollection = new TestCollection();
             testReport = new TestReport();
 
-            testModules = new Dictionary<string, Type>();
-
             this.listener = listener;
 
             configuration = JsonConvert.DeserializeObject<TestConfiguration>(jsonConfiguration);
@@ -50,33 +48,13 @@ namespace Simplic.AdaptiveTesting
             // Validate configuration
             errorsOccured = !Validate(configuration);
 
+            plugInManager = new PlugIns.PlugInManager(listener);
+
             // Load module definitions if autoPlugInDetection is enabled
             if (autoPlugInDetection)
             {
-                foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    if (asm.FullName.Contains("SAT.PlugIn"))
-                    {
-                        foreach (Type cType in asm.GetTypes())
-                        {
-                            // Find Attributes
-                            Attribute[] cAttributes = System.Attribute.GetCustomAttributes(cType);
-
-                            if (cAttributes != null)
-                            {
-                                // Iterate throught all attributes
-                                foreach (PlugIns.ModuleDefinitionAttribute def in cAttributes)
-                                {
-                                    if (def is PlugIns.ModuleDefinitionAttribute)
-                                    {
-                                        listener.Write("ModuleDef", def.Name);
-                                        AddTestModule(def.Name, def.Type);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                System.Diagnostics.Debugger.Launch();
+                plugInManager.LoadPlugIns();
             }
         }
         #endregion
@@ -176,11 +154,13 @@ namespace Simplic.AdaptiveTesting
 
                 foreach (var caseConfig in configuration.TestCases)
                 {
-                    if (testModules.ContainsKey(caseConfig.Type))
+                    TestCaseDefinitionAttribute definition = plugInManager.GetPlugInDefinition<TestCaseDefinitionAttribute>(caseConfig.Type);
+
+                    if (definition != null)
                     {
                         // Create instance of a test-case
                         var tc = (TestCase)Activator.CreateInstance(
-                                        testModules[caseConfig.Type],
+                                        definition.Type,
                                         caseConfig.Name,
                                         caseConfig.Options
                                     );
@@ -240,30 +220,19 @@ namespace Simplic.AdaptiveTesting
         }
         #endregion
 
-        #region [AddTestModule]
-        /// <summary>
-        /// Add a module definition to the current TestProcess
-        /// </summary>
-        /// <param name="name">Unique name of the module definition</param>
-        /// <param name="type">Type for createing a test-module</param>
-        public void AddTestModule(string name, Type type)
-        {
-            if (!testModules.ContainsKey(name))
-            {
-                testModules.Add(name, type);
-            }
-            else
-            {
-                listener.Error("TestMoulde.Add", "The module definition: " + name + " is already existing");
-                errorsOccured = true;
-            }
-        }
-        #endregion
-
         #endregion
 
         #region Public Member
-
+        /// <summary>
+        /// PlugIn manager for accessing plug in system
+        /// </summary>
+        public PlugInManager PlugInManager
+        {
+            get
+            {
+                return plugInManager;
+            }
+        }
         #endregion
     }
 }

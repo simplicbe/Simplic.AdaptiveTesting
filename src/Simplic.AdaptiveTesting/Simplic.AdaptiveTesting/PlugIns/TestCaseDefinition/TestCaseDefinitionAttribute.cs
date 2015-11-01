@@ -7,63 +7,28 @@ using System.Threading.Tasks;
 namespace Simplic.AdaptiveTesting.PlugIns
 {
     /// <summary>
-    /// Attribute which must be decorated over all module definitions
+    /// Attribute which must be decorated over all test case definitions
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class ModuleDefinitionAttribute : Attribute
+    public class TestCaseDefinitionAttribute : PlugInBaseAttribute
     {
-        /// <summary>
-        /// Contains all loaded PlugIn definitions
-        /// </summary>
-        public static IList<ModuleDefinitionAttribute> LoadedDefinitions
-        {
-            get;
-            private set;
-        }
-
         /// <summary>
         /// Create new plugindefinition
         /// </summary>
         /// <param name="name">Name of the plugin</param>
         /// <param name="type">Type of the plugin</param>
-        public ModuleDefinitionAttribute(string name, Type type)
+        public TestCaseDefinitionAttribute(string name, Type type) : base(name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentOutOfRangeException("name", "Name could not be null or whitespace");
-            }
-
-            if(type == null)
+            if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
 
-            Name = name;
             Type = type;
-
-            if (LoadedDefinitions == null)
-            {
-                LoadedDefinitions = new List<ModuleDefinitionAttribute>();
-            }
-
-            // Add to definition list
-            if(!LoadedDefinitions.Contains(this))
-            {
-                LoadedDefinitions.Add(this);
-            }
         }
 
         /// <summary>
-        /// Unique name of the module definition / testcase definition
-        /// </summary>
-        public string Name
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Type of the module definition / testcase definition
+        /// Type of the testcase definition
         /// </summary>
         public Type Type
         {
@@ -82,9 +47,9 @@ namespace Simplic.AdaptiveTesting.PlugIns
             {
                 return false;
             }
-            else if (obj is ModuleDefinitionAttribute)
+            else if (obj is TestCaseDefinitionAttribute)
             {
-                return Name == ((ModuleDefinitionAttribute)obj).Name;
+                return Name == ((TestCaseDefinitionAttribute)obj).Name;
             }
             else
             {
