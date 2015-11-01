@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndicatorDefinitions\DurationIndicator.cs" />
+    <Compile Include="OutputDefinitions\HtmlOutputDefinition.cs" />
     <Compile Include="OutputDefinitions\FileSystemOutputDefinition.cs" />
     <Compile Include="TestCaseDefinitions\Exe\ExeTestCaseDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
