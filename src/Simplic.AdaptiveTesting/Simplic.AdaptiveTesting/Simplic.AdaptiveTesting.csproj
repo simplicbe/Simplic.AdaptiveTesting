@@ -53,7 +53,9 @@
     <Compile Include="Configuration\TestConfiguration.cs" />
     <Compile Include="Configuration\TestSettingsConfiguration.cs" />
     <Compile Include="IListener.cs" />
+    <Compile Include="Indicator\IIndicatorResult.cs" />
     <Compile Include="Indicator\Indicator.cs" />
+    <Compile Include="Indicator\IndicatorResult.cs" />
     <Compile Include="PlugIns\Indicator\IndicatorDefinitionAttribute.cs" />
     <Compile Include="PlugIns\TestCaseDefinition\TestCaseDefinitionAttribute.cs" />
     <Compile Include="PlugIns\PlugInBaseAttribute.cs" />
@@ -62,7 +64,6 @@
     <Compile Include="Reporting\TestCaseReport.cs" />
     <Compile Include="Reporting\TestCaseReportTemplate.cs" />
     <Compile Include="Reporting\TestReport.cs" />
-    <Compile Include="Settings\TestSettings.cs" />
     <Compile Include="Testing\Case\TestCase.cs" />
     <Compile Include="Testing\Result\TestCaseExitCode.cs" />
     <Compile Include="Testing\TestCollection.cs" />

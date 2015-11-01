@@ -38,7 +38,7 @@ namespace Simplic.AdaptiveTesting
         /// Get the result of the indocator
         /// </summary>
         /// <returns></returns>
-        public abstract object GetResult();
+        public abstract IIndicatorResult GetResult();
 
         /// <summary>
         /// Free all resources. No resource should be freed in the stop method.

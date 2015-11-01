@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simplic.AdaptiveTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,11 +12,12 @@ namespace SAT.PlugIn.Std
     /// Indicator for measuring the duration of a test case
     /// </summary>
     [Simplic.AdaptiveTesting.PlugIns.IndicatorDefinition("duration", typeof(DurationIndicator))]
-    public class DurationIndicator : Simplic.AdaptiveTesting.Indicator
+    public class DurationIndicator : Indicator
     {
         #region Private Member
         private Stopwatch stopwatch;
-        private long result;
+        private long max;
+        private IndicatorResult<long> result;
         #endregion
 
         /// <summary>
@@ -24,15 +26,21 @@ namespace SAT.PlugIn.Std
         /// <param name="settings">Settings block</param>
         public DurationIndicator(IDictionary<string, string> settings)
         {
-            result = 0;
+            if (settings.ContainsKey("max"))
+            {
+                if (!long.TryParse(settings["max"], out max))
+                {
+                    throw new Exception("Max setting must be a valid long: " + settings["max"] ?? "NULL");
+                }
+            }
         }
 
         #region Public Methods
         /// <summary>
         /// Return duration as milliseconds
         /// </summary>
-        /// <returns>Duration as milliseconds (long)</returns>
-        public override object GetResult()
+        /// <returns>Indicator result: IndicatorResult<long></returns>
+        public override IIndicatorResult GetResult()
         {
             return result;
         }
@@ -59,7 +67,28 @@ namespace SAT.PlugIn.Std
         public override void Stop()
         {
             stopwatch.Stop();
-            result = stopwatch.ElapsedMilliseconds;
+
+            result = new IndicatorResult<long>();
+            result.Result = stopwatch.ElapsedMilliseconds;
+
+            if (max > 0)
+            {
+                if (result.Result > max)
+                {
+                    result.ExitCode = Simplic.AdaptiveTesting.Testing.TestCaseExitCode.Error;
+                    result.Message = String.Format("Test-case tooks to long to run. Maximum: {0}s, duration: {1}s",  + max / 1000d, result.Result / 1000d);
+                }
+                else
+                {
+                    result.ExitCode = Simplic.AdaptiveTesting.Testing.TestCaseExitCode.Success;
+                    result.Message = "Duration indicator runs successful: " + result.Result / 1000d + "s";
+                }
+            }
+            else
+            {
+                result.ExitCode = Simplic.AdaptiveTesting.Testing.TestCaseExitCode.Success;
+                result.Message = "Duration indicator runs successful: " + result.Result / 1000d + "s";
+            }
         }
 
         /// <summary>
@@ -70,10 +99,13 @@ namespace SAT.PlugIn.Std
             stopwatch = null; // example
         }
 
-
+        /// <summary>
+        /// Return as string
+        /// </summary>
+        /// <returns>Indicator as string</returns>
         public override string ToString()
         {
-            return "Test case duration: " + result / 1000d + "s";
+            return result == null ? "No result yet" : result.Message;
         }
         #endregion
     }

@@ -219,7 +219,22 @@ namespace Simplic.AdaptiveTesting
                     // Return indicator values
                     foreach (var indicator in testCase.Indicators)
                     {
-                        listener.Write("Indicator", indicator.ToString());
+                        IIndicatorResult result = indicator.GetResult();
+                        if (result != null)
+                        {
+                            if (result.ExitCode == TestCaseExitCode.Success)
+                            {
+                                listener.Success("Indicator", result.Message);
+                            }
+                            else if (result.ExitCode == TestCaseExitCode.Warning)
+                            {
+                                listener.Warning("Indicator", result.Message);
+                            }
+                            else if (result.ExitCode == TestCaseExitCode.Error)
+                            {
+                                listener.Error("Indicator", result.Message);
+                            }
+                        }
                     }
 
                     // Create report-entry

@@ -53,7 +53,7 @@ namespace SAT.PlugIn.Std
         protected override TestResult Process()
         {
             TestResult result = new TestResult(this);
-
+            
             Process process = new Process();
 
             process.StartInfo.FileName = executable;
