@@ -53,8 +53,8 @@
     <Compile Include="Configuration\TestConfiguration.cs" />
     <Compile Include="Configuration\TestSettingsConfiguration.cs" />
     <Compile Include="IListener.cs" />
-    <Compile Include="Indicator\Implementation\TestDurationIndicator.cs" />
     <Compile Include="Indicator\Indicator.cs" />
+    <Compile Include="PlugIns\Indicator\IndicatorDefinitionAttribute.cs" />
     <Compile Include="PlugIns\TestCaseDefinition\TestCaseDefinitionAttribute.cs" />
     <Compile Include="PlugIns\PlugInBaseAttribute.cs" />
     <Compile Include="PlugIns\PlugInManager.cs" />
@@ -72,9 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PlugIns\Indicator\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

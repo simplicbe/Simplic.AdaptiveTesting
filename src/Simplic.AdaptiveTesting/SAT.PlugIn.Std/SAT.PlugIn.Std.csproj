@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exe\ExeModuleDefinition2.cs" />
-    <Compile Include="Exe\ExeModuleDefinition.cs" />
+    <Compile Include="IndicatorDefinitions\DurationIndicator.cs" />
+    <Compile Include="TestCaseDefinitions\Exe\ExeTestCaseDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

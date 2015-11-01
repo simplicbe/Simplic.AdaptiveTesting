@@ -42,6 +42,12 @@ namespace Simplic.AdaptiveTesting.Testing
 
             try
             {
+                // Prepare all indicators
+                foreach (var indicator in indicators)
+                {
+                    indicator.Prepare();
+                }
+
                 // Before test starts
                 foreach (var indicator in indicators)
                 {
@@ -55,6 +61,12 @@ namespace Simplic.AdaptiveTesting.Testing
                 foreach (var indicator in indicators)
                 {
                     indicator.Stop();
+                }
+
+                // free indicator resources
+                foreach (var indicator in indicators)
+                {
+                    indicator.Free();
                 }
             }
             catch(Exception ex)

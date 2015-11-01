@@ -14,9 +14,10 @@ namespace Simplic.AdaptiveTesting
 {
     /// <summary>
     /// The test-process is the main class for executing a complete test containins:
-    /// 1. Configuration loading
-    /// 2. Test case execution
-    /// 3. Report generation
+    /// 1. PlugIn loading
+    /// 2. Configuration loading
+    /// 3. Test case execution
+    /// 4. Report generation
     /// </summary>
     public class TestProcess
     {
@@ -53,7 +54,6 @@ namespace Simplic.AdaptiveTesting
             // Load module definitions if autoPlugInDetection is enabled
             if (autoPlugInDetection)
             {
-                System.Diagnostics.Debugger.Launch();
                 plugInManager.LoadPlugIns();
             }
         }
@@ -164,6 +164,24 @@ namespace Simplic.AdaptiveTesting
                                         caseConfig.Name,
                                         caseConfig.Options
                                     );
+
+                        // Add all indicators
+                        if (caseConfig.Indicators != null && caseConfig.Indicators.Count > 0)
+                        {
+                            foreach (var indicatorConfig in caseConfig.Indicators)
+                            {
+                                IndicatorDefinitionAttribute indicatorDefinition = plugInManager.GetPlugInDefinition<IndicatorDefinitionAttribute>(indicatorConfig.Name);
+
+                                // Create new indicator
+                                var indicator = (Indicator)Activator.CreateInstance(
+                                        indicatorDefinition.Type,
+                                        indicatorConfig.Settings
+                                    );
+
+                                // Add indicator to test case
+                                tc.AddIndicator(indicator);
+                            }
+                        }
 
                         // Add to collection
                         testCollection.Add(tc);
