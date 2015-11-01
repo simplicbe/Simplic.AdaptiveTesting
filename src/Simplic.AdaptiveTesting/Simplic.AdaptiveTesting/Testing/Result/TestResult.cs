@@ -33,6 +33,7 @@ namespace Simplic.AdaptiveTesting.Testing
         /// <summary>
         /// Name of the test which produce this result. Will be part of a test report
         /// </summary>
+        [Newtonsoft.Json.JsonIgnoreAttribute]
         public TestCase TestCase
         {
             get
@@ -43,6 +44,17 @@ namespace Simplic.AdaptiveTesting.Testing
             set
             {
                 testCase = value;
+            }
+        }
+
+        /// <summary>
+        /// Name of the test
+        /// </summary>
+        public string TestName
+        {
+            get
+            {
+                return testCase.TestName;
             }
         }
 

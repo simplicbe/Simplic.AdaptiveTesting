@@ -14,7 +14,7 @@ namespace Simplic.AdaptiveTesting.Reporting
     {
         #region Private Member
         private TestResult result;
-        private IList<Indicator> indicators;
+        private IList<IIndicatorResult> indicatorResults;
         #endregion
 
         #region Constructor
@@ -22,11 +22,35 @@ namespace Simplic.AdaptiveTesting.Reporting
         /// Create a new TestCaseReport for reporting the complete result of a testcase
         /// </summary>
         /// <param name="result">Instance of a result class</param>
-        /// <param name="indicators">List of indicators</param>
-        public TestCaseReport(TestResult result, IList<Indicator> indicators)
+        /// <param name="indicatorResults">List of indicator results</param>
+        public TestCaseReport(TestResult result, IList<IIndicatorResult> indicatorResults)
         {
-            this.indicators = indicators;
+            this.indicatorResults = indicatorResults;
             this.result = result;
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Raw result of the test
+        /// </summary>
+        public TestResult Result
+        {
+            get
+            {
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Indicators for the current test
+        /// </summary>
+        public IList<IIndicatorResult> IndicatorResults
+        {
+            get
+            {
+                return indicatorResults;
+            }
         }
         #endregion
     }

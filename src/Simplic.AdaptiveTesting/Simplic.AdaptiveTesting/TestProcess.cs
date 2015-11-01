@@ -39,16 +39,7 @@ namespace Simplic.AdaptiveTesting
         /// <param name="autoPlugInDetection">If set to true, the system will look for plugins in the current AppDomain</param>
         public TestProcess(string jsonConfiguration, IListener listener, bool autoPlugInDetection = true)
         {
-            testCollection = new TestCollection();
-            testReport = new TestReport();
-
             this.listener = listener;
-
-            configuration = JsonConvert.DeserializeObject<TestConfiguration>(jsonConfiguration);
-
-            // Validate configuration
-            errorsOccured = !Validate(configuration);
-
             plugInManager = new PlugIns.PlugInManager(listener);
 
             // Load module definitions if autoPlugInDetection is enabled
@@ -56,6 +47,14 @@ namespace Simplic.AdaptiveTesting
             {
                 plugInManager.LoadPlugIns();
             }
+
+            configuration = JsonConvert.DeserializeObject<TestConfiguration>(jsonConfiguration);
+                        
+            // Validate configuration
+            errorsOccured = !Validate(configuration);
+
+            testCollection = new TestCollection();
+            testReport = new TestReport(this, configuration.Settings.Output);
         }
         #endregion
 
@@ -71,7 +70,7 @@ namespace Simplic.AdaptiveTesting
         {
             if (configuration == null)
             {
-                throw new ArgumentNullException("configuratio");
+                throw new ArgumentNullException("configuration");
             }
 
             bool returnValue = true;
@@ -87,35 +86,6 @@ namespace Simplic.AdaptiveTesting
                 {
                     listener.Error("Configuration.Validation", "Could not find `project`-name in `settings`");
                     returnValue = false;
-                }
-
-                if (string.IsNullOrWhiteSpace(configuration.Settings.ReportOutput))
-                {
-                    listener.Error("Configuration.Validation", "Could not find `reportOutput` in `settings`");
-                    returnValue = false;
-                }
-                else
-                {
-                    try
-                    {
-                        if (!configuration.Settings.ReportOutput.StartsWith("\\"))
-                        {
-                            configuration.Settings.ReportOutput = "\\" + configuration.Settings.ReportOutput;
-                        }
-                        if (!configuration.Settings.ReportOutput.EndsWith("\\"))
-                        {
-                            configuration.Settings.ReportOutput += "\\";
-                        }
-
-                        // create complete output path
-                        configuration.Settings.ReportOutput = System.Windows.Forms.Application.StartupPath + configuration.Settings.ReportOutput;
-
-                        IO.DirectoryHelper.CreateDirectoryIfNotExists(configuration.Settings.ReportOutput);
-                    }
-                    catch (Exception ex)
-                    {
-                        listener.Error("Configuration.CreateRptDirectory", "Could not create report output directory: " + configuration.Settings.ReportOutput + " - " + ex.Message);
-                    }
                 }
             }
 
@@ -238,7 +208,7 @@ namespace Simplic.AdaptiveTesting
                     }
 
                     // Create report-entry
-                    var rptCase = new TestCaseReport(output, testCase.Indicators);
+                    var rptCase = new TestCaseReport(output, testCase.Indicators.Select(item => item.GetResult()).ToList());
                     testReport.TestCaseReports.Add(rptCase);
                 }
 
@@ -264,6 +234,17 @@ namespace Simplic.AdaptiveTesting
             get
             {
                 return plugInManager;
+            }
+        }
+
+        /// <summary>
+        /// Listener for writing to the output
+        /// </summary>
+        public IListener Listener
+        {
+            get
+            {
+                return listener;
             }
         }
         #endregion

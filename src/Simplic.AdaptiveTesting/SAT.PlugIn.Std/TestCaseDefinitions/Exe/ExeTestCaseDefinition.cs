@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAT.PlugIn.Std
+namespace SAT.PlugIn.Std.TestCases
 {
     /// <summary>
     /// Test which simply execute a windows executable

@@ -28,5 +28,14 @@ namespace Simplic.AdaptiveTesting.Configuration
             get;
             set;
         }
+
+        /// <summary>
+        /// Output options, for example output directory, ...
+        /// </summary>
+        public IList<TestOutputConfiguration> Output
+        {
+            get;
+            set;
+        }
     }
 }

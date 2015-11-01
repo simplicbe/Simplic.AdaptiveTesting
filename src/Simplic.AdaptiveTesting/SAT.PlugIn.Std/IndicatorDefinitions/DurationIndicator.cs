@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAT.PlugIn.Std
+namespace SAT.PlugIn.Std.Indicators
 {
     /// <summary>
     /// Indicator for measuring the duration of a test case
