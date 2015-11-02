@@ -70,6 +70,21 @@ namespace SAT.PlugIn.Std.Output
 
             StringBuilder sb = new StringBuilder();
 
+            sb.Append(TestCaseHeader("Test statistic"));
+            sb.AppendLine(Info("Test cases: " + TestReport.TestCasesCount));
+            sb.AppendLine(Success("Successfull test cases: " + TestReport.SuccessfullTestCaseCount));
+            sb.AppendLine(Warning("Test cases with warning: " + TestReport.WarningTestCaseCount));
+            sb.AppendLine(Error("Failed Test cases: " + TestReport.ErrorTestCaseCount));
+            sb.AppendLine("<br /><br />");
+
+            sb.AppendLine(Info("Indicators: " + TestReport.IndicatorsCount));
+            sb.AppendLine(Success("Successfull indicators: " + TestReport.SuccessfullIndicatorsCount));
+            sb.AppendLine(Warning("Indicators with warning: " + TestReport.WarningIndicatorsCount));
+            sb.AppendLine(Error("Failed indicators: " + TestReport.ErrorIndicatorsCount));
+
+            sb.AppendLine("<hr />");
+            sb.AppendLine("<br /><br />");
+
             // Report test-case result
             foreach (var res in TestReport.TestCaseReports)
             {

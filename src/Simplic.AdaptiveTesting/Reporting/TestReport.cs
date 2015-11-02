@@ -17,6 +17,15 @@ namespace Simplic.AdaptiveTesting.Reporting
         private IList<Configuration.TestOutputConfiguration> outputConfiguration;
         private IList<ReportOutput> reportOutptus;
         private TestProcess process;
+
+        // Test statistic
+        private int successfullTestCaseCount;
+        private int warningTestCaseCount;
+        private int errorTestCaseCount;
+
+        private int successfullIndicatorsCount;
+        private int warningIndicatorsCount;
+        private int errorIndicatorsCount;
         #endregion
 
         #region Constructor
@@ -64,6 +73,40 @@ namespace Simplic.AdaptiveTesting.Reporting
         /// </summary>
         public void Build()
         {
+            // Add testcase statistic
+            testCaseReports.ToList().ForEach((TestCaseReport tc) =>
+                    {
+                        switch (tc.Result.ExitCode)
+                        {
+                            case Testing.TestCaseExitCode.Success:
+                                successfullTestCaseCount++;
+                                break;
+                            case Testing.TestCaseExitCode.Warning:
+                                warningTestCaseCount++;
+                                break;
+                            case Testing.TestCaseExitCode.Error:
+                                errorTestCaseCount++;
+                                break;
+                        }
+
+                        // Add indicator statistic
+                        tc.IndicatorResults.ToList().ForEach((IIndicatorResult ind) =>
+                        {
+                            switch (ind.ExitCode)
+                            {
+                                case Testing.TestCaseExitCode.Success:
+                                    successfullIndicatorsCount++;
+                                    break;
+                                case Testing.TestCaseExitCode.Warning:
+                                    warningIndicatorsCount++;
+                                    break;
+                                case Testing.TestCaseExitCode.Error:
+                                    errorIndicatorsCount++;
+                                    break;
+                            }
+                        });
+                    });
+
             foreach (var output in reportOutptus)
             {
                 process.Listener.Write(" ", output.Name);
@@ -104,6 +147,94 @@ namespace Simplic.AdaptiveTesting.Reporting
             get
             {
                 return process;
+            }
+        }
+
+        /// <summary>
+        /// Return amount/count of test cases
+        /// </summary>
+        public int TestCasesCount
+        {
+            get
+            {
+                return successfullTestCaseCount + warningTestCaseCount + errorTestCaseCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of successfull test cases
+        /// </summary>
+        public int SuccessfullTestCaseCount
+        {
+            get
+            {
+                return successfullTestCaseCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of test casis with warnings
+        /// </summary>
+        public int WarningTestCaseCount
+        {
+            get
+            {
+                return warningTestCaseCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of failed test cases
+        /// </summary>
+        public int ErrorTestCaseCount
+        {
+            get
+            {
+                return errorTestCaseCount;
+            }
+        }
+
+        /// <summary>
+        /// Return the amount of indicators
+        /// </summary>
+        public int IndicatorsCount
+        {
+            get
+            {
+                return successfullIndicatorsCount + warningIndicatorsCount + errorIndicatorsCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of successfull indicators
+        /// </summary>
+        public int SuccessfullIndicatorsCount
+        {
+            get
+            {
+                return successfullIndicatorsCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of indicators with warnings
+        /// </summary>
+        public int WarningIndicatorsCount
+        {
+            get
+            {
+                return warningIndicatorsCount;
+            }
+        }
+
+        /// <summary>
+        /// Amount of failed indicators
+        /// </summary>
+        public int ErrorIndicatorsCount
+        {
+            get
+            {
+                return errorIndicatorsCount;
             }
         }
         #endregion

@@ -61,12 +61,6 @@ namespace Simplic.AdaptiveTesting.Testing
                 foreach (var indicator in indicators)
                 {
                     indicator.Stop();
-
-                    if (indicator.GetResult().ExitCode == TestCaseExitCode.Error)
-                    {
-                        // Set exit-code to error, becuase one of the indicators failed
-                        testResult.ExitCode = TestCaseExitCode.Error;
-                    }
                 }
 
                 // free indicator resources

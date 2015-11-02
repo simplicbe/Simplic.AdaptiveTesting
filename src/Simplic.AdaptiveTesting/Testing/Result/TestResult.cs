@@ -46,7 +46,13 @@ namespace Simplic.AdaptiveTesting.Testing
                 testCase = value;
             }
         }
-
+        /*
+                         if (indicator.GetResult().ExitCode == TestCaseExitCode.Error)
+                    {
+                        // Set exit-code to error, becuase one of the indicators failed
+                        testResult.ExitCode = TestCaseExitCode.Error;
+                    }
+    */
         /// <summary>
         /// Name of the test
         /// </summary>
