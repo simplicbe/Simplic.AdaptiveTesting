@@ -91,7 +91,7 @@ namespace SAT.PlugIn.Std.Output
                 // Indicator output
                 if (res.IndicatorResults.Count > 0)
                 {
-                    sb.AppendLine("Indicator");
+                    sb.AppendLine(IndicatorHeader("Indicator"));
 
                     foreach (var indicator in res.IndicatorResults)
                     {
@@ -138,7 +138,7 @@ namespace SAT.PlugIn.Std.Output
 
         private string TestCaseHeader(string name)
         {
-            return String.Format("<h1>{0}</h1>", name);
+            return String.Format("<h1>&gt;&nbsp;{0}</h1>", name);
         }
 
         private string IndicatorHeader(string name)
